@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Film } from "lucide-react";
+import { Calendar, Film } from "lucide-react";
+import MovieSearch from "../components/MovieSearch";
 
 function Movies() {
   const [movieSearch, setmovieSearch] = useState("");
@@ -14,7 +15,6 @@ function Movies() {
       .then((response) => response.json())
       .then((data) => {
         console.log("peliculas", data);
-        setmovieSearch("");
         setMovies(data);
       })
 
@@ -39,37 +39,53 @@ function Movies() {
               cinematográfica
             </p>
           </div>
-          <input
-            type="text"
-            className="border-2 border-gray-300 rounded-md p-2 mt-4 bg-amber-100 mr-2"
-            placeholder="Escribe el nombre de la pelicula"
-            value={movieSearch}
-            onChange={(e) => setmovieSearch(e.target.value)}
+          <MovieSearch
+            movieSearch={movieSearch}
+            setmovieSearch={setmovieSearch}
+            onSearch={getMovies}
           />
-          <button
-            type="button"
-            className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 mt-4 cursor-pointer"
-            onClick={getMovies}
-          >
-            Obtener peliculas
-          </button>
-
           <div className="grid grid-cols-3 gap-4">
             {movies.map((movie) => {
               return (
                 <div
-                  className=" bg-yellow-800 rounded-lg shadow-md p-4 text-white"
+                  className=" group relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-100 dark:border-gray-700"
                   key={movie.id}
                 >
-                  <p>{movie.id}</p>
-                  <p>{movie.original_title}</p>
-                  <p>{movie.title}</p>
-                  <p>{movie.overview}</p>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                    className="w-full h-auto"
-                  />
+                  {/* Portada de la pelicula */}
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={movie.title}
+                      className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+
+                  {/* Titulo de la pelicula */}
+                  <div className="p-5">
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                      {movie.title}
+                    </h3>
+
+                    {/* Fecha de estreno */}
+                    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-4 h-4" />
+                        {movie.release_date}
+                      </div>
+                    </div>
+
+                    {/* Descripcion de la pelicula */}
+                    <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed">
+                      {movie.overview || "No hay descripción disponible"}
+                    </p>
+
+                    {/* Boton para ver mas detalles */}
+                    <button className="mt-4 w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 cursor-pointer">
+                      Ver mas detalles
+                    </button>
+                  </div>
                 </div>
               );
             })}
