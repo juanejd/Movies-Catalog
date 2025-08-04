@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .models import MovieFavorite
 
 
 class MoviesSerializer(serializers.Serializer):
@@ -15,3 +16,9 @@ class MoviesSerializer(serializers.Serializer):
     # def to_representation(self, instance):
     #     """Transform to match your desired output format"""
     #     return {"title": instance.get("Title"), "imdb_id": instance.get("imdbID")}
+
+
+class FavoriteMovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MovieFavorite
+        fields = "__all__"
