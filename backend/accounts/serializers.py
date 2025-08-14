@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from rest_framework_simplejwt.tokens import Token
-from .models import User, Profile
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from .models import User
 from django.contrib.auth.password_validation import validate_password
 
 
@@ -12,15 +12,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "email"]
 
 
-class TokenObtainPairSerializer(TokenObtainPairSerializer):
+# token jwt personalizado, se determina que datos se van a almacenar en el token
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
 
         token["full_name"] = user.profile.full_name
         token["username"] = user.username
-        token["email"] = user.mail
-        token["image"] = user.profile.image
+        token["email"] = user.email
+        token["image"] = str(user.profile.image)
         token["verified"] = user.profile.verified
 
         return token

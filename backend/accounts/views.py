@@ -1,11 +1,41 @@
-from .serializers import UserSerializer, RegisterSerializer
+from .serializers import (
+    UserSerializer,
+    RegisterSerializer,
+    MyTokenObtainPairSerializer,
+)
 from .models import User
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+
 from rest_framework.response import Response
 from rest_framework import status
 
-# from rest_framework.authtoken.models import Token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+
+class RegisterView(CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = RegisterSerializer
+
+
+@api_view(["GET", "POST"])
+@permission_classes(IsAuthenticated)
+def dashboard(request) -> Response:
+    if request.method == "GET":
+        context = f"Hey {request.user} Estas viendo una respuesta GET"
+        return Response({"response": context}, status=status.HTTP_200_OK)
+    elif request.method == "POST":
+        text = request.POST.get("texto")
+        response = f"Hey {request.user} tu texto es {text}"
+        return Response({"response": response}, status=status.HTTP_200_OK)
+
+    return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "POST"])
@@ -21,11 +51,6 @@ def list_users(request) -> Response:
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
-
-
-# @api_view(["GET"])
-# def login_user(request) -> Response:
-#     serializer =
 
 
 @api_view(["POST"])
