@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calendar, Film } from "lucide-react";
 import MovieSearch from "../components/MovieSearch";
+import { Link } from "react-router-dom";
 
 function Movies() {
   const [movieSearch, setmovieSearch] = useState("");
@@ -82,9 +83,11 @@ function Movies() {
                     </p>
 
                     {/* Boton para ver mas detalles */}
-                    <button className="mt-4 w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 cursor-pointer">
-                      Ver mas detalles
-                    </button>
+                    <Link to={`/movies/${movie.id}`}>
+                      <button className="mt-4 w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 cursor-pointer">
+                        Ver mas detalles
+                      </button>
+                    </Link>
                   </div>
                 </div>
               );

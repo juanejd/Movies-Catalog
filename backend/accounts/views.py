@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+# from rest_framework.authtoken.models import Token
+
 
 @api_view(["GET", "POST"])
 def list_users(request) -> Response:
@@ -19,6 +21,11 @@ def list_users(request) -> Response:
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
+
+
+# @api_view(["GET"])
+# def login_user(request) -> Response:
+#     serializer =
 
 
 @api_view(["POST"])
