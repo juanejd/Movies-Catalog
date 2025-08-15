@@ -8,8 +8,8 @@ from django.contrib.auth.password_validation import validate_password
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        # fields = "__all__"
-        fields = ["id", "username", "email"]
+        fields = "__all__"
+        # fields = ["id", "username", "email"]
 
 
 # token jwt personalizado, se determina que datos se van a almacenar en el token
@@ -39,21 +39,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     # custom username validation
     def validate_username(self, value):
-        if len(value) < 3:
+        if len(value) < 5:
             raise serializers.ValidationError(
-                {"message": "El nombre de usuario debe tener al menos 5 caracteres"}
+                "El nombre de usuario debe tener al menos 5 caracteres"
             )
 
         if User.objects.filter(username=value).exists():
-            raise serializers.ValidationError(
-                {"message": "El nombre de usuario ya esta en uso"}
-            )
-        return value
-
-    # custom email validation
-    def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError({"message": "El email ya esta en uso"})
+            raise serializers.ValidationError("El nombre de usuario ya esta en uso")
         return value
 
     def validate(self, attrs):
