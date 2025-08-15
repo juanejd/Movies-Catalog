@@ -55,7 +55,6 @@ function LoginForm() {
               className="w-full pl-12 pr-12 py-3 border rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="Ingrese una contrase;a"
             />
-            <button type="button" onClick=""></button>
           </div>
         </div>
         <button

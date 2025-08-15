@@ -1,11 +1,10 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 function MovieDetail() {
   const [movie, setMovie] = useState([]);
 
   const { movie_id } = useParams();
   console.log(movie_id);
-  const navigate = useNavigate();
 
   const baseUrl = "http://127.0.0.1:8000/api/movies";
   const getMovie = () => {
